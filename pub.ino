@@ -1,11 +1,11 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
 
-// Wi-Fi credentials
+// Wi-Fi
 const char* ssid = "Scott";
 const char* password = "1505scott";
 
-// MQTT broker configuration
+// Configuración del broker
 const char* mqttServer = "192.168.0.111";
 const int mqttPort = 9000;
 const char* mqttTopic = "topic test";
@@ -18,7 +18,7 @@ PubSubClient mqttClient(wifiClient);
 void setup() {
   Serial.begin(115200);
 
-  // Connect to Wi-Fi
+  // Conexión a WiFi
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
     delay(1000);
@@ -26,7 +26,7 @@ void setup() {
   }
   Serial.println("Connected to Wi-Fi!");
 
-  // Connect to MQTT broker
+  // Connexión al broker mqtt
   mqttClient.setServer(mqttServer, mqttPort);
   while (!mqttClient.connected()) {
     if (mqttClient.connect("arduino-client")) {
@@ -43,13 +43,13 @@ void setup() {
 void loop() {
   //recopilación de valores
   int Sensor=analogRead(A3);
-  valor=analogRead(A2);
-  lum=valor*3.3/4096;
+  valor=analogRead(A2);          //lectura de la medida de la LDR
+  lum=valor*3.3/4096;            //conversión de unidades a voltios.
   valor=log(3.3*4600/(1800*lum)-4600/1800)/0.7;
   valor=exp(valor);
   valor=560/valor;
-  String message = String(Sensor)+" "+String(valor,2);
-  mqttClient.publish(mqttTopic, message.c_str());
+  String message = String(Sensor)+" "+String(valor,2);    //montamos el mensaje
+  mqttClient.publish(mqttTopic, message.c_str());         //lo publico bajo el topic el mensaje convertido a char.
   
   Serial.println("Message sent to MQTT broker!");
   Serial.println(message);
