@@ -9,7 +9,9 @@ const char* password = "1505scott";
 const char* mqttServer = "192.168.0.111";
 const int mqttPort = 9000;
 const char* mqttTopic = "topic test";
-
+//definición de constantes
+float valor;
+float lum;
 WiFiClient wifiClient;
 PubSubClient mqttClient(wifiClient);
 
@@ -39,17 +41,20 @@ void setup() {
 }
 
 void loop() {
-  // Send a message to MQTT broker
+  //recopilación de valores
   int Sensor=analogRead(A3);
-  int SensorB=analogRead(A2);
-  
-  String message = String(Sensor)+" "+String(SensorB);
+  valor=analogRead(A2);
+  lum=valor*3.3/4096;
+  valor=log(3.3*4600/(1800*lum)-4600/1800)/0.7;
+  valor=exp(valor);
+  valor=560/valor;
+  String message = String(Sensor)+" "+String(valor,2);
   mqttClient.publish(mqttTopic, message.c_str());
-
+  
   Serial.println("Message sent to MQTT broker!");
   Serial.println(message);
 
 
 
-  delay(5000);  // Send message every 5 seconds
+  delay(2000);  // Send message every 5 seconds
 }
