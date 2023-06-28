@@ -18,9 +18,9 @@ sub.on('connect', ()=>{
 })
 sub.on('message',(topic,message) =>{                     //recepción del mensaje
     message= message.toString()                          //conversión del mensaje a strig
-    message= message.split(' ')                          
-    const message1 = parseInt(message[1])
-    const message2 = parseInt(message[0])
+    message= message.split(' ')                          //separo en dos partes el mensaje
+    const message1 = parseInt(message[1])                //guardo la sugunda parte del mensaje
+    const message2 = parseInt(message[0])                //guardo la primera parte
     console.log(message)
 
     db.query(
@@ -31,6 +31,4 @@ sub.on('message',(topic,message) =>{                     //recepción del mensaj
         }
     )
 })
-//broker.on('published', (packet) =>{
- //   console.log(packet.payload.toString())
-//})
+ 
