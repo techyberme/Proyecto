@@ -1,15 +1,11 @@
-const mosca=require('mosca')
-
-const broker = new mosca.Server({
+const mosca=require('mosca')     
+const broker = new mosca.Server({   //inicializo el broker
     port:9000
 })
-broker.on('ready',() =>{
-    console.log('Mosca broker in ready!')
+broker.on('ready',() =>{           //enciendo el broker
+    console.log('Mosca broker in ready!')            //muestro en la consola que el broker se ha encendido correctamente
 })
 
-broker.on('clientConnected' , (client) =>{
+broker.on('clientConnected' , (client) =>{            //muestro en la consolo los nuevos clientes conectados
     console.log('New client' + client.id)
 })
-//broker.on('published', (packet) =>{
- //   console.log(packet.payload.toString())
-//})
