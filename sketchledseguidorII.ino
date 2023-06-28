@@ -50,14 +50,14 @@
        valord=analogRead(d);
        resta1=valora-valorb;            
        resta2=valorc-valord;
-       restaz=max(abs(resta1),abs(resta2));
-      if(abs(resta1)==restaz){
+       restaz=max(abs(resta1),abs(resta2)); //guardamos el valor máximo absoluto
+      if(abs(resta1)==restaz){ //como hemos guardado el absoluto y queremos conocer el signo de la resta máxima, igualamos restaz a la resta más grande
         restaz=resta1;
       }
       else if(abs(resta2)==restaz){
         restaz=resta2;
       }
-      resta3=valora-valorc;
+      resta3=valora-valorc;          //realizamos lo mismo pero para el eje x
       resta4=valorb-valord;
       restax=max(abs(resta3),abs(resta4));
       if(abs(resta3)==restax){
@@ -66,25 +66,25 @@
       else if(abs(resta4)==restax){
         restax=resta4;
       }
-      if (abs(stepper2.currentPosition())<1024){
+      if (abs(stepper2.currentPosition())<1024){     //si el motor 2 está entre -45º y 45º
       if(restaz<-50 || restaz>50){
-      if(restaz>600 || restaz<-600){
-      stepper2.stop();
+      if(restaz>600 || restaz<-600){          //en caso de que sea muy pequeña o muy grande restaz
+      stepper2.stop();                         //paramos motor
     }
-       else if (restaz>0){
-        stepper2.setSpeed(200);
+       else if (restaz>0){                    //si no y es positiva
+        stepper2.setSpeed(200);                //velocidad en sentido horario
         stepper2.runSpeed();
         encender();
        }
-       else if (restaz<0){
-        stepper2.setSpeed(-200);
+       else if (restaz<0){                    //si no y es negativa
+        stepper2.setSpeed(-200);              //velocidad en sentido antihorario
       stepper2.runSpeed();
-      encender();
+      encender();                              //ponemos la secuencia de leds en funcionamineto
     }
       }  
     }
     if (abs(stepper.currentPosition())<512){
-    if (restax<-50 || restax>50){  //este es para el  de arriba a ab
+    if (restax<-50 || restax>50){  
     if(restax>600 || restax<-600){
       encender();
     }
@@ -102,21 +102,21 @@
     }
     } 
        
-     if (abs(stepper2.currentPosition())>=1024){
-      if (stepper2.currentPosition()>0){
-        if(restaz<0){
+     if (abs(stepper2.currentPosition())>=1024){          //en el caso que el motor2 este fuera del rango de -45 y 45º
+      if (stepper2.currentPosition()>0){                  //si está en 90º
+        if(restaz<0){                                     //solo puede girar hacia en sentido antihorario
            stepper2.setSpeed(-200);
           stepper2.runSpeed();
           encender();
         }
-      else if(restaz>0){
-               stepper2.setSpeed(0);
-               stepper2.runSpeed();
+      else if(restaz>0){                                   
+               stepper2.setSpeed(0);                       //no puede girar en sentido horario
+               stepper2.runSpeed();                        
                
         }
 
       }
-       else if (stepper2.currentPosition()<0){
+       else if (stepper2.currentPosition()<0){             //si está a -90º, lo contrarior
         if(restaz>0){
            stepper2.setSpeed(200);
            stepper2.runSpeed();
@@ -129,7 +129,7 @@
 
       }
       }
-      if (abs(stepper.currentPosition())>=512){
+      if (abs(stepper.currentPosition())>=512){             //Para el eje z, lo mismo pero para 45º
       if (stepper.currentPosition()>0){
         if(restax<0){
            stepper.setSpeed(-200);
@@ -157,7 +157,7 @@
       Serial.println(restaz);
        
       }  
-      void encender(){
+      void encender(){                    //función para encender y apagar leds
         if (millis() - timerOne > 350) {
       digitalWrite(52, LOW);
       digitalWrite(53,HIGH);
